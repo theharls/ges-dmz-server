@@ -1,0 +1,10 @@
+{
+	"port": 80,
+	"ssl_": {
+		"key": "ssl/cert.key",
+		"cert": "ssl/cert.crt"
+	},
+	"inboundAuthQueryParam": false,
+	"inboundAuthId": "",
+	"pmsServerAuthId": "xyzzy"
+}
