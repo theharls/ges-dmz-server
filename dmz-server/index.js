@@ -1,13 +1,50 @@
-var http = require('http');
+// GES Inbound SMS Server
+//
+"use strict";
 
-var server = http.createServer(function(request, response) {
+var server = require("./js/server");
+var service = require("./js/service");
+var serviceName = "GES DMZ Server";
+var config = require("./config.json");
+var version = "V1.2";
 
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Hello World!");
+/* CHANGE LOG
+*
+* - V1.0 - Initial.
+* - V1.1 - Allows SSL.
+* - V1.2 - Waitlist and odometers set from PMS Server and can be read by clients.
+*
+* */
 
-});
+console.log("\nGES DMZ Server " + version);
+// Need to set directory for service.
+process.chdir(__dirname);
 
-var port = process.env.PORT || 1337;
-server.listen(port);
+var verbose = process.argv[2] && process.argv[2].toLowerCase() === "-v";
+if (verbose) process.argv[2] = null;
 
-console.log("Server running at http://localhost:%d", port);
+if (process.argv[2]) {
+	var installing = process.argv[2].toLowerCase() === "--install" || process.argv[2].toLowerCase() === "-i";
+	var uninstalling = process.argv[2].toLowerCase() === "--uninstall" || process.argv[2].toLowerCase() === "-u";
+
+	if (installing || uninstalling) {
+		service(__filename, serviceName, installing);
+	}
+	else {
+		showUse();
+		process.exit(0);
+	}
+}
+else {
+	// no params - run directly
+	showUse();
+	config.product = serviceName;
+	config.version = version;
+	config.verbose = verbose;
+	server(config);
+}
+
+function showUse() {
+	console.log("\nnode app -i   to install service\nnode app -u   to uninstall service\nnode app -v   verbose mode");
+}
+
