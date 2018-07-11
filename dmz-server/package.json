@@ -1,5 +1,5 @@
 {
-  "name": "GES DMZ Server",
+  "name": "ges_dmz_server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
